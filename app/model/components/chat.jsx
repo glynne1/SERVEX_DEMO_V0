@@ -90,7 +90,7 @@ export default function Chat() {
         setTyping(true);
 
         try {
-            const response = await fetch("http://localhost:8000/asesor", {
+            const response = await fetch("https://servex-back.onrender.com/asesor", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ user_id: "frontend_user", mensaje: userInput }),
