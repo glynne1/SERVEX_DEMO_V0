@@ -21,15 +21,18 @@ export default function TutorialBanner() {
 
         {/* Texto */}
         <div className="w-full md:w-1/2 text-center md:text-left">
-  <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight">
-    Plataforma de análisis IA para Servex, simple, rápida y <span className="text-blue-900">free</span>.
-  </h2>
+        <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight">
+  Servex necesita un nuevo estándar de análisis: rápido, preciso y basado en IA.
+</h2>
 
-  <p className="text-gray-600 mt-4 text-xs sm:text-base max-w-md">
-    Este demo muestra un modelo capaz de integrarse a las bases de datos de tu empresa, 
-    inferir información, detectar fluctuaciones, generar análisis precisos y sugerir 
-    posibles pares de productos; una experiencia práctica para entender su impacto real.
-  </p>
+<p className="text-gray-600 mt-4 text-xs sm:text-base max-w-md">
+  Este demo plantea la evolución que Servex debe adoptar la revisión manual entre 
+  cientos de registros por herramientas de inteligencia artificial capaces de analizar datos en 
+  tiempo real. Con este enfoque, los modelos pueden interpretar información compleja, detectar 
+  patrones y ofrecer conclusiones precisas al instante, estableciendo un nuevo nivel de eficiencia 
+  y claridad para todo el proceso de análisis.
+</p>
+
 </div>
 
        

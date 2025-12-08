@@ -22,18 +22,27 @@ export default function TutorialBanner() {
         {/* Texto */}
         <div className="w-full md:w-1/2 text-center md:text-left">
         <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight">
-  Acceso móvil a la IA de Servex, análisis claro y <span className="text-blue-900">en tiempo real</span>.
+  Acceso universal a la IA de Servex: un análisis moderno, claro y <span className="text-blue-900">sin barreras</span>.
 </h2>
 
+<p className="text-gray-600 mt-4 text-xs sm:text-base max-w-md">
+  Este demo refleja la visión detrás del desarrollo oficial de la plataforma: permitir que 
+  toda la información, procesos y capacidades de análisis de <strong>Servex</strong> estén 
+  disponibles en cualquier dispositivo, ya sea móvil o desktop. El objetivo es ofrecer un 
+  acceso práctico, rápido y unificado sin reemplazar el trabajo que actualmente se desarrolla 
+  en <strong>CET Designer</strong>.
+  <br /><br />
+  CET sigue siendo la herramienta central para el diseño y la construcción de catálogos; sin 
+  embargo, sus modelos y su ecosistema no permiten la integración directa con sistemas de 
+  inteligencia artificial. Por eso es necesario complementar su función con una plataforma 
+  moderna y accesible que habilite análisis en tiempo real, consultas inteligentes y una 
+  experiencia abierta para dealers y equipos comerciales.
+  <br /><br />
+  Con esta arquitectura paralela, Servex puede mantener a CET como su entorno de diseño, mientras 
+  la nueva plataforma se convierte en el espacio ideal para ventas, análisis, exploración de 
+  productos e interacción con IA bajo los estándares más avanzados del sector.
+</p>
 
-          <p className="text-gray-600 mt-4 text-xs sm:text-base max-w-md">
-            Este desarrollo de modelo de inteligencia artificial para <strong>Servex</strong> 
-            está disponible en dispositivos móviles, permitiendo acceder a análisis y datos 
-            de productos educativos desde cualquier lugar. La IA se alimenta de la base de 
-            datos de <strong>Diversified Spaces</strong>, analiza la información tabular, 
-            reconoce productos y genera insights precisos y accionables, optimizando la toma 
-            de decisiones incluso sobre la marcha.
-          </p>
         </div>
 
      

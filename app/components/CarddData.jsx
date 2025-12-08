@@ -15,17 +15,23 @@ export default function TutorialBanner() {
         {/* Texto */}
         <div className="w-full md:w-1/2 text-center md:text-left">
         <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight">
-  Inteligencia artificial conectada al catálogo de <strong>Diversified Spaces</strong>, precisa y <span className="text-blue-900">confiable</span>.
+  IA integrada al catálogo centralizado de <strong>Diversified Spaces</strong>, 
+  con análisis preciso y <span className="text-blue-900">totalmente adaptable</span>.
 </h2>
 
+<p className="text-gray-600 mt-4 text-xs sm:text-base max-w-md">
+  Para este demo, se recopiló y unificó todo el catálogo oficial de 
+  <strong>Diversified Spaces</strong>. Se realizó una extracción completa de datos 
+  desde los documentos PDF, identificando cada producto, sus características, modelos y 
+  especificaciones técnicas. Toda esta información fue procesada y centralizada dentro de 
+  una base de datos relacional diseñada para este proyecto.
+  <br /><br />
+  Gracias a esta estructura, el modelo de inteligencia artificial puede acceder libremente 
+  a cada componente del catálogo, analizarlo en tiempo real y filtrar resultados con base 
+  en las necesidades del usuario. Esto permite generar respuestas claras, confiables y 
+  totalmente alineadas con los datos reales de la empresa.
+</p>
 
-          <p className="text-gray-600 mt-4 text-xs sm:text-base max-w-md">
-            Este modelo de inteligencia artificial se alimenta directamente de la base de datos 
-            de productos disponibles de <strong>Diversified Spaces</strong>. Analiza los datos 
-            tabulares para comprender el nicho de mercado, reconocer los productos y generar 
-            información veraz y accionable, ayudando a tomar decisiones estratégicas basadas 
-            en datos reales.
-          </p>
         </div>
 
            {/* Imagen */}
