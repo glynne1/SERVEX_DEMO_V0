@@ -16,6 +16,8 @@
     "@react-pdf-viewer/toolbar": "^3.12.0",
     "chart.js": "^4.5.1",
     "framer-motion": "^12.23.25",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.4",
     "lucide-react": "^0.556.0",
     "marked": "^17.0.1",
     "next": "16.0.7",
