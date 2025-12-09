@@ -58,7 +58,7 @@ export default function CardsGrid() {
             <img
               src="/logo.png"
               alt="Servex Logo"
-              className="w-16 sm:w-20 mx-auto mb-4 opacity-95"
+              className="w-16 sm:w-80 mx-auto mb-4 opacity-95"
             />
 
             <p className="text-gray-600 text-sm sm:text-base leading-relaxed max-w-[95%] sm:max-w-[85%] mx-auto">

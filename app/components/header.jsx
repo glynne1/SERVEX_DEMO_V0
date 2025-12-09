@@ -60,7 +60,7 @@ export default function Header() {
         <img
           src={currentLogo}
           alt="Logo"
-          className="h-10 cursor-pointer transition-all duration-500"
+          className="h-6 cursor-pointer transition-all duration-500"
           onClick={() => router.push("/")}
         />
 
