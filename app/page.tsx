@@ -116,7 +116,7 @@ export default function Home() {
               {/* TEXTO DEL MODAL */}
               <p className="text-sm leading-6 text-gray-800 mb-6 text-center">
   Este demo muestra cómo un modelo de IA se conecta a las arquitecturas de datos de cada cliente de Servex para acceder a información en tiempo real sobre productos, características y combinaciones. La plataforma realiza análisis rápidos, detecta fluctuaciones, infiere datos clave y sugiere productos de forma inteligente, demostrando el valor de integrar IA con tus bases de datos.  
-  Además, incluye un modelo conectado al catálogo de Diversified Spaces, capaz de interpretar datos tabulares y generar información confiable para la toma de decisiones, con acceso móvil para consultar insights desde cualquier dispositivo.
+  Además, incluye un modelo conectado al catálogo de  Diversified Spaces, capaz de interpretar datos tabulares y generar información confiable para la toma de decisiones, con acceso móvil para consultar insights desde cualquier dispositivo.
 </p>
 
 
