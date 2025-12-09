@@ -2,12 +2,25 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Trash2, Send, Mic, StopCircle, Paperclip, Box, Settings2, FileText, Lightbulb, X } from "lucide-react";
+import {
+    Trash2,
+    Send,
+    Mic,
+    StopCircle,
+    Paperclip,
+    Box,
+    Settings2,
+    FileText,
+    Lightbulb,
+    X
+} from "lucide-react";
 import { marked } from "marked";
 
 // 🔹 IMPORTAR COMPONENTES EXTERNOS
-import MiComponenteExterno from "../../components/graficas"; // Researcher
-import GLYNNEMatrix from "../../components/Data"; // Modal del icono foco
+import MiComponenteExterno from "../../components/Data"; // Researcher
+import GLYNNEMatrix from "../../components/graficas"; // Modal del icono foco
+import PdfViewer from "../../components/pdf";
+
 
 function formatMessage(text) {
     const paragraphs = text.split("\n").filter((p) => p.trim() !== "");
@@ -43,12 +56,15 @@ export default function Chat() {
     // ADD → menú gigante del botón Foco
     const [showLightbulbMenu, setShowLightbulbMenu] = useState(false);
 
+    // 🔥 ADD → menú gigante del PRIMER ICONO (Settings2)
+    const [showSettingsMenu, setShowSettingsMenu] = useState(false);
+
     const predefinedQuestions = [
-      "¿Qué modelos de sillas ergonómicas para estudiantes están disponibles?",
-      "Muéstrame escritorios modulables para aulas flexibles.",
-      "Buscar gabinetes de almacenamiento bajo para laboratorios.",
-      "¿Qué mesas vienen con altura ajustable para diferentes edades?",
-      "Mostrar muebles con superficies de melamina resistentes a rayones.",
+        "¿Qué modelos de sillas ergonómicas para estudiantes están disponibles?",
+        "Muéstrame escritorios modulables para aulas flexibles.",
+        "Buscar gabinetes de almacenamiento bajo para laboratorios.",
+        "¿Qué mesas vienen con altura ajustable para diferentes edades?",
+        "Mostrar muebles con superficies de melamina resistentes a rayones."
     ];
 
     const chatRef = useRef(null);
@@ -56,22 +72,26 @@ export default function Chat() {
 
     const clearConversation = () => setMessages([]);
 
-    // ADD → cerrar Researcher o Lightbulb al hacer clic fuera
+    // ADD → cerrar Researcher o Lightbulb o Settings al hacer clic fuera
     useEffect(() => {
         const handler = (e) => {
             if (
                 !e.target.closest("#researchMenu") &&
                 !e.target.closest("#researchButton") &&
                 !e.target.closest("#lightbulbMenu") &&
-                !e.target.closest("#lightbulbButton")
+                !e.target.closest("#lightbulbButton") &&
+                !e.target.closest("#settingsMenu") &&
+                !e.target.closest("#settingsButton")
             ) {
                 setShowResearchMenu(false);
                 setShowLightbulbMenu(false);
+                setShowSettingsMenu(false);
             }
         };
-        if (showResearchMenu || showLightbulbMenu) document.addEventListener("mousedown", handler);
+        if (showResearchMenu || showLightbulbMenu || showSettingsMenu)
+            document.addEventListener("mousedown", handler);
         return () => document.removeEventListener("mousedown", handler);
-    }, [showResearchMenu, showLightbulbMenu]);
+    }, [showResearchMenu, showLightbulbMenu, showSettingsMenu]);
 
     useEffect(() => {
         if (messagesEndRef.current) {
@@ -93,7 +113,7 @@ export default function Chat() {
             const response = await fetch("https://servex-back.onrender.com/asesor", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ user_id: "frontend_user", mensaje: userInput }),
+                body: JSON.stringify({ user_id: "frontend_user", mensaje: userInput })
             });
 
             const data = await response.json();
@@ -104,7 +124,7 @@ export default function Chat() {
         } catch (error) {
             setMessages((prev) => [
                 ...prev,
-                { from: "bot", text: "Error al conectar con el servidor 😥" },
+                { from: "bot", text: "Error al conectar con el servidor 😥" }
             ]);
             setTyping(false);
         }
@@ -118,7 +138,6 @@ export default function Chat() {
 
     return (
         <div className="w-full h-full flex flex-col bg-white overflow-hidden">
-
             {/* HEADER */}
             <div className="px-4 py-2 flex justify-end border-b border-gray-100">
                 {messages.length > 0 && (
@@ -138,7 +157,6 @@ export default function Chat() {
             >
                 {messages.length === 0 ? (
                     <div className="flex-1 flex flex-col items-center justify-center">
-
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -156,7 +174,7 @@ export default function Chat() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="w-full max-w-xl  -mt-[50px] bg-transparent border border-gray-300 shadow-xl rounded-2xl p-4"
+                            className="w-full max-w-xl -mt-[50px] bg-transparent border border-gray-300 shadow-xl rounded-2xl p-4"
                         >
                             <div className="flex items-center space-x-2">
                                 <span className="text-black/60">
@@ -175,10 +193,34 @@ export default function Chat() {
 
                             <div className="mt-3 flex justify-between items-center pt-2 border-t border-gray-100">
                                 <div className="flex space-x-2 items-center">
-
-                                    <button className="text-gray-500 hover:text-black p-1 rounded-full hover:bg-gray-100">
+                                    {/* 🔥 PRIMER ICONO (Settings2) → ABRIR MODAL */}
+                                    <button
+                                        id="settingsButton"
+                                        className="text-gray-500 hover:text-black p-1 rounded-full hover:bg-gray-100"
+                                        onClick={() => setShowSettingsMenu(true)}
+                                    >
                                         <Settings2 size={20} />
                                     </button>
+
+                                    {/* 🔥 MODAL GIGANTE Settings */}
+                                    {showSettingsMenu && (
+                                        <div
+                                            id="settingsMenu"
+                                            className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black/40 backdrop-blur-sm z-[999]"
+                                        >
+                                            <div className="relative bg-white w-[80%] h-[80%] rounded-2xl shadow-2xl p-6 overflow-y-auto">
+                                                <button
+                                                    onClick={() => setShowSettingsMenu(false)}
+                                                    className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-200"
+                                                >
+                                                    <X size={24} />
+                                                </button>
+
+                                                <PdfViewer />
+
+                                            </div>
+                                        </div>
+                                    )}
 
                                     {/* 🔥 BOTÓN RESEARCHER */}
                                     <button
@@ -295,9 +337,11 @@ export default function Chat() {
                             <div
                                 className={`
                                     px-4 py-3 rounded-2xl break-words
-                                    ${msg.from === "user"
-                                        ? "bg-black text-white rounded-br-none"
-                                        : "bg-white text-black shadow-lg border border-gray-100 rounded-tl-none"}
+                                    ${
+                                        msg.from === "user"
+                                            ? "bg-black text-white rounded-br-none"
+                                            : "bg-white text-black shadow-lg border border-gray-100 rounded-tl-none"
+                                    }
                                     w-full md:max-w-[50%]
                                 `}
                             >
@@ -305,7 +349,7 @@ export default function Chat() {
                                     <div
                                         className="prose prose-sm max-w-none"
                                         dangerouslySetInnerHTML={{
-                                            __html: marked.parse(msg.text || ""),
+                                            __html: marked.parse(msg.text || "")
                                         }}
                                     />
                                 ) : (
@@ -361,7 +405,6 @@ export default function Chat() {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 }

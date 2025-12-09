@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -14,6 +14,7 @@ import Footer from "./components/footer";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const hasSeenModal = sessionStorage.getItem("servex_modal_shown");
@@ -27,9 +28,48 @@ export default function Home() {
     document.body.style.overflow = showModal ? "hidden" : "auto";
   }, [showModal]);
 
+  // Inicializa el audio (apunta a /soft.mp3 en public)
+  useEffect(() => {
+    // Si el navegador bloquea la reproducción automática no hay problema:
+    // la reproducción se hará ante la interacción del usuario.
+    audioRef.current = new Audio("/soft.mp3");
+    // Opcional: ajustar volumen por defecto (0.0 - 1.0)
+    audioRef.current.volume = 0.9;
+    // Preload para reducir latencia
+    audioRef.current.preload = "auto";
+
+    return () => {
+      // Cleanup: pausar y liberar referencia al desmontar
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  const handleContinue = () => {
+    setShowModal(false);
+
+    // Intentar reproducir el audio; manejar la promesa para evitar errores en consola
+    if (audioRef.current) {
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          // fallbacks silentes (por ejemplo, bloqueo del autoplay)
+          console.warn("No se pudo reproducir audio en este momento:", err);
+        });
+      }
+    }
+
+    // Mantengo tu fetch original (sin-cors) tal como estaba
+    fetch("https://servex-back.onrender.com", {
+      method: "GET",
+      mode: "no-cors",
+    }).catch(() => {});
+  };
+
   return (
     <div className="w-full min-h-screen bg-white text-black relative">
-
       {/* ------------------------------------------------------------------ */}
       {/* ------------------------ MODAL CON BLUR -------------------------- */}
       {/* ------------------------------------------------------------------ */}
@@ -48,7 +88,7 @@ export default function Home() {
           >
             <motion.div
               className="
-                bg-white/80 backdrop-blur-2xl text-black 
+                bg-white backdrop-blur-2xl text-black 
                 p-8 max-w-lg rounded-2xl shadow-2xl 
                 border border-white/40
               "
@@ -65,7 +105,7 @@ export default function Home() {
               {/* LOGO DEBAJO DEL TITULO */}
               <div className="flex justify-center mt-3 mb-5">
                 <Image
-                  src="/logo3.png"   // 🔥 Cambia esta ruta por tu logo
+                  src="/logo3.png"
                   width={90}
                   height={90}
                   alt="Servex Logo"
@@ -75,35 +115,14 @@ export default function Home() {
 
               {/* TEXTO DEL MODAL */}
               <p className="text-sm leading-6 text-gray-800 mb-6 text-center">
-                Este demo muestra cómo un modelo de inteligencia artificial se 
-                conecta directamente a arquitecturas de datos especializadas para 
-                cada cliente de Servex, accediendo a información en tiempo real 
-                como productos, características y combinaciones.
-                <br /><br />
-                La plataforma permite análisis rápidos, detección de fluctuaciones, 
-                inferencia de datos clave y sugerencias inteligentes de productos, 
-                demostrando el impacto real de integrar IA con las bases de datos 
-                de tu empresa.
-                <br /><br />
-                También incluye un modelo conectado al catálogo de Diversified 
-                Spaces, capaz de interpretar datos tabulares, entender el mercado 
-                y generar información confiable para la toma de decisiones.
-                <br /><br />
-                Además, el acceso móvil permite consultar análisis e insights 
-                accionables desde cualquier dispositivo, garantizando una 
-                experiencia útil incluso en movimiento.
-              </p>
+  Este demo muestra cómo un modelo de IA se conecta a las arquitecturas de datos de cada cliente de Servex para acceder a información en tiempo real sobre productos, características y combinaciones. La plataforma realiza análisis rápidos, detecta fluctuaciones, infiere datos clave y sugiere productos de forma inteligente, demostrando el valor de integrar IA con tus bases de datos.  
+  Además, incluye un modelo conectado al catálogo de Diversified Spaces, capaz de interpretar datos tabulares y generar información confiable para la toma de decisiones, con acceso móvil para consultar insights desde cualquier dispositivo.
+</p>
+
 
               {/* BOTÓN */}
               <button
-                onClick={() => {
-                  setShowModal(false);
-
-                  fetch("https://servex-back.onrender.com", {
-                    method: "GET",
-                    mode: "no-cors",
-                  }).catch(() => {});
-                }}
+                onClick={handleContinue}
                 className="
                   w-full py-2 rounded-xl 
                   bg-black text-white 
