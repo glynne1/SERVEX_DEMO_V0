@@ -14,6 +14,13 @@ import Footer from "./components/footer";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
+
+  // backend status
+  const [backendReady, setBackendReady] = useState(false);
+  const [wakingMessage, setWakingMessage] = useState(
+    "Despertando servicios… esto puede tardar unos segundos mientras estamos en desarrollo."
+  );
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -28,18 +35,12 @@ export default function Home() {
     document.body.style.overflow = showModal ? "hidden" : "auto";
   }, [showModal]);
 
-  // Inicializa el audio (apunta a /soft.mp3 en public)
   useEffect(() => {
-    // Si el navegador bloquea la reproducción automática no hay problema:
-    // la reproducción se hará ante la interacción del usuario.
     audioRef.current = new Audio("/soft.mp3");
-    // Opcional: ajustar volumen por defecto (0.0 - 1.0)
     audioRef.current.volume = 0.9;
-    // Preload para reducir latencia
     audioRef.current.preload = "auto";
 
     return () => {
-      // Cleanup: pausar y liberar referencia al desmontar
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
@@ -47,41 +48,43 @@ export default function Home() {
     };
   }, []);
 
+  // despertar backend cuando se muestra el modal
+  useEffect(() => {
+    if (showModal) {
+      fetch("https://servex-back.onrender.com", {
+        method: "GET",
+        mode: "no-cors",
+      })
+        .then(() => {
+          setBackendReady(true);
+          setWakingMessage("");
+        })
+        .catch(() => {
+          setBackendReady(true);
+          setWakingMessage("");
+        });
+    }
+  }, [showModal]);
+
   const handleContinue = () => {
     setShowModal(false);
 
-    // Intentar reproducir el audio; manejar la promesa para evitar errores en consola
     if (audioRef.current) {
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
-          // fallbacks silentes (por ejemplo, bloqueo del autoplay)
-          console.warn("No se pudo reproducir audio en este momento:", err);
+          console.warn("No se pudo reproducir audio:", err);
         });
       }
     }
-
-    // Mantengo tu fetch original (sin-cors) tal como estaba
-    fetch("https://servex-back.onrender.com", {
-      method: "GET",
-      mode: "no-cors",
-    }).catch(() => {});
   };
 
   return (
     <div className="w-full min-h-screen bg-white text-black relative">
-      {/* ------------------------------------------------------------------ */}
-      {/* ------------------------ MODAL CON BLUR -------------------------- */}
-      {/* ------------------------------------------------------------------ */}
-
       <AnimatePresence>
         {showModal && (
           <motion.div
-            className="
-              fixed inset-0 z-50 flex items-center justify-center 
-              backdrop-blur-xl 
-              px-4
-            "
+            className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xl px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -95,14 +98,12 @@ export default function Home() {
               initial={{ scale: 0.85, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.85, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 140, damping: 18 }}
+              transition={{ type: 'spring', stiffness: 140, damping: 18 }}
             >
-              {/* TITULO */}
               <h2 className="text-2xl font-bold text-center">
                 Demo Servex – Beta 0.1
               </h2>
 
-              {/* LOGO DEBAJO DEL TITULO */}
               <div className="flex justify-center mt-3 mb-5">
                 <Image
                   src="/logo3.png"
@@ -113,33 +114,54 @@ export default function Home() {
                 />
               </div>
 
-              {/* TEXTO DEL MODAL */}
               <p className="text-sm leading-6 text-gray-800 mb-6 text-center">
-  Este demo muestra cómo un modelo de IA se conecta a las arquitecturas de datos de cada cliente de Servex para acceder a información en tiempo real sobre productos, características y combinaciones. La plataforma realiza análisis rápidos, detecta fluctuaciones, infiere datos clave y sugiere productos de forma inteligente, demostrando el valor de integrar IA con tus bases de datos.  
-  Además, incluye un modelo conectado al catálogo de  Diversified Spaces, capaz de interpretar datos tabulares y generar información confiable para la toma de decisiones, con acceso móvil para consultar insights desde cualquier dispositivo.
-</p>
+                Este demo muestra cómo un modelo de IA se conecta a las
+                arquitecturas de datos de cada cliente de Servex para acceder a
+                información en tiempo real sobre productos, características y
+                combinaciones. La plataforma realiza análisis rápidos, detecta
+                fluctuaciones, infiere datos clave y sugiere productos de forma
+                inteligente. Además, incluye un modelo conectado al catálogo de
+                Diversified Spaces para análisis tabular.
+              </p>
 
+              {/* SPINNER + MENSAJE */}
+              {wakingMessage && (
+                <div className="flex flex-col items-center mb-4">
+                  {/* Spinner */}
+                  <div
+                    className="
+                      w-6 h-6 border-2 border-gray-400 
+                      border-t-transparent rounded-full 
+                      animate-spin mb-2
+                    "
+                  ></div>
+
+                  {/* Texto */}
+                  <p className="text-xs text-gray-500 text-center">
+                    {wakingMessage}
+                  </p>
+                </div>
+              )}
 
               {/* BOTÓN */}
               <button
                 onClick={handleContinue}
-                className="
-                  w-full py-2 rounded-xl 
-                  bg-black text-white 
-                  hover:bg-gray-900 
-                  transition
-                "
+                disabled={!backendReady}
+                className={`
+                  w-full py-2 rounded-xl transition 
+                  ${
+                    backendReady
+                      ? "bg-black text-white hover:bg-gray-900"
+                      : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                  }
+                `}
               >
-                Continuar
+                {backendReady ? "Continuar" : "Esperando backend..."}
               </button>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* ------------------------------------------------------------------ */}
-      {/* ----------------------------- CONTENIDO --------------------------- */}
-      {/* ------------------------------------------------------------------ */}
 
       <Header />
 
