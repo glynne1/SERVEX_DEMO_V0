@@ -48,17 +48,6 @@ export default function Header() {
         Planeamiento inicial
       </span>
 
-      {/* 🔥 NUEVO BOTÓN: Pasos a seguir */}
-      <span
-        onClick={() => {
-          setMenuOpen(false);
-          router.push("/paso2");
-        }}
-        className="cursor-pointer text-sm font-medium text-black hover:text-gray-800 transition-all"
-      >
-        Pasos a seguir
-      </span>
-
       <span
         onClick={() => {
           setMenuOpen(false);
