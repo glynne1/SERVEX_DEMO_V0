@@ -220,11 +220,21 @@ export default function GLYNNEOverviewComponent() {
                         });
                       }
                     }}
-                    className="w-full flex items-start justify-between p-2 rounded-lg hover:bg-gray-50 transition"
+                    className="
+                      w-full
+                      flex
+                      items-start       /* <-- CORREGIDO */
+                      justify-between
+                      p-2
+                      rounded-lg
+                      hover:bg-gray-50
+                      transition
+                      text-left         /* <-- CORREGIDO */
+                    "
                   >
-                    <div className="flex items-center gap-3">
-                      <s.icon className="w-4 h-4" />
-                      <span>{s.title}</span>
+                    <div className="flex items-start gap-3">  {/* <-- CORREGIDO */}
+                      <s.icon className="w-4 h-4 mt-0.5" />
+                      <span className="text-left">{s.title}</span>
                     </div>
                   </button>
                 </li>
@@ -289,5 +299,5 @@ export default function GLYNNEOverviewComponent() {
         GLYNNE · Plataforma de agentes y automatización guiada por IA
       </footer>
     </div>
-  );
-}
+);
+          }

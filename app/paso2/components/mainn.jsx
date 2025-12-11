@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
-import AgentConfigPanel from "./componets/logicPanel2";
 
 export default function Page() {
   const [open, setOpen] = useState(false);
@@ -38,7 +37,7 @@ export default function Page() {
           >
             GLYNNE Panel AI es el entorno donde los desarrolladores diseñan, configuran y prueban sus modelos inteligentes antes de integrarlos
             al <strong>motor de procesamiento LLM</strong>. Aquí puedes modificar la estructura, personalidad y comportamiento de cada agente,
-            asignar roles específicos y definir parámetros técnicos avanzados . Es el punto de enlace entre la creatividad humana y la autonomía
+            asignar roles específicos y definir parámetros técnicos avanzados. Es el punto de enlace entre la creatividad humana y la autonomía
             generativa, optimizado para que cada ajuste se traduzca en rendimiento, coherencia y precisión dentro del ecosistema GLYNNE.
           </motion.p>
 
@@ -74,7 +73,7 @@ export default function Page() {
         </div>
       </div>
 
-      {/* 🔹 Popup con AgentConfigPanel */}
+      {/* 🔹 Popup SIN AgentConfigPanel */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -84,36 +83,29 @@ export default function Page() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-white bg-opacity-95 flex flex-col items-center justify-center overflow-y-auto z-50"
           >
-            {/* Contenedor del contenido */}
+            {/* Contenedor */}
             <motion.div
               initial={{ y: 40, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.3 }}
               className="relative w-full ml-[-80px] max-w-[100%] h-[100vh] rounded-2xl p-8"
             >
-          
-
-              {/* Descripción del panel */}
+              {/* Descripción */}
               <motion.div
-                className="max-w-3xl text-center mx-auto "
+                className="max-w-3xl text-center mx-auto"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
-              >
-              
-              </motion.div>
+              ></motion.div>
 
-              {/* Contenedor del componente */}
-              <div className=" ">
-                <AgentConfigPanel />
+              {/* Contenido vacío (antes estaba el componente) */}
+              <div className="">
+                {/* Eliminado AgentConfigPanel */}
               </div>
             </motion.div>
           </motion.div>
         )}
-
-      
       </AnimatePresence>
-
     </main>
   );
 }
